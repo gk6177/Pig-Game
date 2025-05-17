@@ -1,303 +1,257 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
-
-* {
+/* Basic Styles */
+body,
+html {
+  background-color: #000;
   margin: 0;
   padding: 0;
-  box-sizing: inherit;
-}
-
-html {
-  font-size: 62.5%;
+  font-family: Arial, sans-serif;
+  height: 100%;
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Nunito', sans-serif;
-  font-weight: 400;
-  height: 100vh;
-  color: #333;
-  background-image: linear-gradient(to top left, #753682 0%, #bf2e34 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* LAYOUT */
 main {
-  position: relative;
-  width: 100rem;
-  height: 60rem;
-  background-color: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(200px);
-  filter: blur();
-  box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.25);
-  border-radius: 9px;
-  overflow: hidden;
   display: flex;
-}
-
-.player {
-  flex: 50%;
-  padding: 9rem;
-  display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  transition: all 0.75s;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-/* ELEMENTS */
 .name {
-  position: relative;
-  font-size: 4rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  word-spacing: 2px;
-  font-weight: 300;
-  margin-bottom: 1rem;
+  font-size: 2rem;
 }
 
-.score {
-  font-size: 8rem;
-  font-weight: 300;
-  color: #c7365f;
-  margin-bottom: auto;
-}
-
-.player--active {
-  background-color: rgba(255, 255, 255, 0.4);
-}
-
-.player--active .name {
-  font-weight: 700;
-}
-
-.player--active .score {
-  font-weight: 400;
-}
-
-.player--active .current {
-  opacity: 1;
-}
-
-.current {
-  background-color: #c7365f;
-  opacity: 0.8;
-  border-radius: 9px;
-  color: #fff;
-  width: 65%;
-  padding: 2rem;
-  text-align: center;
-  transition: all 0.75s;
+.score,
+.current-score {
+  font-size: 3rem;
 }
 
 .current-label {
-  text-transform: uppercase;
-  margin-bottom: 1rem;
-  font-size: 1.7rem;
-  color: #ddd;
+  font-size: 1.5rem;
 }
 
-.current-score {
-  font-size: 3.5rem;
+.player--active .name {
+  color: green;
 }
 
-/* ABSOLUTE POSITIONED ELEMENTS */
-.btn {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #444;
-  background: none;
-  border: none;
-  font-family: inherit;
-  font-size: 1.8rem;
-  text-transform: uppercase;
-  cursor: pointer;
-  font-weight: 400;
-  transition: all 0.2s;
-
-  background-color: white;
-  background-color: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(10px);
-
-  padding: 0.7rem 2.5rem;
-  border-radius: 50rem;
-  box-shadow: 0 1.75rem 3.5rem rgba(0, 0, 0, 0.1);
-}
-
-.btn::first-letter {
-  font-size: 2.4rem;
-  display: inline-block;
-  margin-right: 0.7rem;
-}
-
-.btn--new {
-  top: 4rem;
-}
-
-.btn--roll {
-  top: 39.3rem;
-}
-
-.btn--hold {
-  top: 46.1rem;
-}
-
-.btn:active {
-  transform: translate(-50%, 3px);
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
-}
-
-.btn:focus {
-  outline: none;
-}
-
+/* Dice and Button */
 .dice {
-  position: absolute;
-  left: 50%;
-  top: 16.5rem;
-  transform: translateX(-50%);
-  height: 10rem;
-  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.2);
+  width: 100px;
+  margin: 20px 0;
+  visibility: hidden;
+  /* hide content but retain space */
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.player--winner {
-  background-color: #2f2f2f;
+.dice.show {
+  visibility: visible;
+  opacity: 1;
 }
 
-.player--winner .name {
-  font-weight: 700;
-  color: #c7365f;
+.dice-controls {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 1rem;
 }
+
+@keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(15deg);
+  }
+
+  50% {
+    transform: rotate(-15deg);
+  }
+
+  75% {
+    transform: rotate(10deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.dice.animate {
+  animation: shake 0.4s ease;
+}
+
 
 .hidden {
   display: none;
 }
 
-/* Custom Modal Prompt Styles - Themed to Match Game */
+.btn {
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
+  cursor: pointer;
+}
+
+/* Overlay Styles */
 .overlay {
-  animation: fadeIn 0.4s ease-out;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.3s ease-in-out;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  display: none;
+  right: 0;
+  bottom: 0;
+  display: flex;
   justify-content: center;
   align-items: center;
+  background: rgba(0, 0, 0, 0.6);
   z-index: 999;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
 }
+
 
 .modal {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(15px);
-  border-radius: 9px;
-  padding: 3rem;
-  width: 35rem;
+  background-color: white;
+  padding: 2rem;
   text-align: center;
-  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.3);
-  color: #333;
-  font-family: 'Nunito', sans-serif;
-}
-
-.modal h3 {
-  font-size: 2.4rem;
-  font-weight: 700;
-  margin-bottom: 2rem;
-  color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-}
-
-.modal input {
-  width: 80%;
-  padding: 1rem;
-  font-size: 1.6rem;
-  border-radius: 9px;
-  border: none;
-  margin-bottom: 2rem;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.7);
-  color: #333;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.modal input::placeholder {
-  color: #888;
+  border-radius: 8px;
 }
 
 .modal-buttons {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
-.modal-buttons button {
-  padding: 1rem 2.5rem;
-  font-size: 1.6rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 50rem;
+.btn-ok,
+.btn-cancel {
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.2s;
-  backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.15);
-}
-
-.modal-buttons button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.25);
 }
 
 .btn-ok {
-  color: #2e7d32;
-  background-color: rgba(76, 175, 80, 0.15);
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
 
 .btn-cancel {
-  color: #c62828;
-  background-color: rgba(244, 67, 54, 0.15);
-}
-
-.win-message {
-  margin-bottom: 2rem;
-  font-size: 3rem;
+  background-color: #f44336;
   color: white;
-  text-align: center;
-  font-weight: 700;
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 3rem;
-  border-radius: 1rem;
-  text-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 5px;
 }
 
-.btn--modal {
-  position: static;
-  transform: none;
-  margin-top: 2rem;
-  font-size: 1.6rem;
-  padding: 1rem 2.5rem;
-  backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.6);
-  border-radius: 50rem;
-  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
-  color: #444;
-  cursor: pointer;
-  border: none;
+.btn:hover,
+.btn-ok:hover,
+.btn-cancel:hover {
+  filter: brightness(1.1);
+}
+
+
+.players {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 900px;
+}
+
+.player {
+  opacity: 0.6;
+  transition: all 0.3s ease;
+  flex: 1 1 45%;
+  /* Take up ~45% of the row on desktop */
+  max-width: 400px;
+  /* Prevents them from growing too wide */
+  min-width: 260px;
+  /* Optional: prevents shrinking too small */
+  width: 100%;
+  /* Ensures full width in stacked layout */
+  text-align: center;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.player--active {
+  color: #000;
+  opacity: 1;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  transform: scale(1.02);
+  transition: all 0.3s ease;
+}
+
+.player--winner {
+  background-color: #099d2c;
+  border: 2px solid green;
+}
+
+.player--winner .name {
+  color: darkgreen;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+  .name {
+    font-size: 1.2rem;
+  }
+
+  .players {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .player {
+    width: 90%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .score,
+  .current-score {
+    font-size: 2rem;
+  }
+
+  .current-label {
+    font-size: 1.2rem;
+  }
+
+  .dice {
+    width: 70px;
+  }
+
+  .btn {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  .dice-controls {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .btn {
+    width: auto;
+    max-width: 160px;
+  }
 }

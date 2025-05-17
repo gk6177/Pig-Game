@@ -9,7 +9,6 @@ const current0El = document.getElementById('current--0');
 const current1El = document.getElementById('current--1');
 
 const diceEl = document.querySelector('.dice');
-const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
 
@@ -19,32 +18,38 @@ const btnHold = document.querySelector('.btn--hold');
 let scores, currentScore, activePlayer, playing, winningScore;
 
 function showWinningScorePrompt() {
-    document.getElementById('winOverlay').style.display = 'none';
-    document.getElementById('scorePromptOverlay').style.display = 'flex';
+    document.getElementById('winOverlay').classList.remove('active');
+    const input = document.getElementById('scoreInput');
+    input.value = '';
+    document.getElementById('scorePromptOverlay').classList.add('active');
+    input.focus();
 }
+
 
 function submitWinningScore() {
     const input = document.getElementById('scoreInput').value;
     const parsed = Number(input);
     winningScore = parsed > 0 ? parsed : 100;
-    document.getElementById('scorePromptOverlay').style.display = 'none';
+    document.getElementById('scorePromptOverlay').classList.remove('active');
     startGame();
 }
 
 function cancelWinningScore() {
     winningScore = 100;
-    document.getElementById('scorePromptOverlay').style.display = 'none';
+    document.getElementById('scorePromptOverlay').classList.remove('active');
     startGame();
 }
 
 
 function startGame() {
-    document.getElementById('winOverlay').style.display = 'none';
+    document.getElementById('winOverlay').classList.remove('active');
     score0El.textContent = 0;
     score1El.textContent = 0;
-    diceEl.classList.add('hidden');
+    diceEl.classList.remove('show');
     current0El.textContent = 0;
     current1El.textContent = 0;
+    btnRoll.disabled = false;
+    btnHold.disabled = false;
 
     scores = [0, 0];
     currentScore = 0;
@@ -56,6 +61,14 @@ function startGame() {
     player0El.classList.add('player--active');
     player1El.classList.remove('player--active');
 
+}
+
+function showWinOverlay() {
+    const winOverlay = document.getElementById('winOverlay');
+    const winMessage = document.getElementById('winMessage');
+    winMessage.textContent = `🎉 Player ${activePlayer + 1} Wins! 🎉`;
+    winMessage.classList.remove('hidden');
+    winOverlay.classList.add('active');
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -75,24 +88,43 @@ const switchPlayer = function () {
 // Rolling Dice Functionality
 btnRoll.addEventListener('click', function () {
     if (playing) {
-        // Generate random dice roll
-        const dice = Math.trunc(Math.random() * 6) + 1;
+        const diceSound = document.getElementById('dice-sound');
 
-        // Display dice roll
-        diceEl.classList.remove('hidden');
-        diceEl.src = `dice-${dice}.png`;
+        // Play dice sound
+        diceSound.currentTime = 0;
+        diceSound.play();
 
-        // Check to see if dice roll is 1
-        if (dice !== 1) {
-            // add dice to current score
-            currentScore += dice;
-            document.getElementById(`current--${activePlayer}`).textContent = currentScore;
-        } else {
-            // switch to next player
-            switchPlayer();
-        }
+        // Animate the dice roll
+        let rollCount = 10;
+        let animationInterval = setInterval(() => {
+            const dice = Math.trunc(Math.random() * 6) + 1;
+            diceEl.classList.add('show');
+            diceEl.classList.add('animate');
+            setTimeout(() => {
+                diceEl.classList.remove('animate');
+            }, 400);
+
+            diceEl.src = `dice-${dice}.png`;
+            rollCount--;
+
+            if (rollCount === 0) {
+                clearInterval(animationInterval);
+
+                // Final roll to determine game logic
+                const finalDice = Math.trunc(Math.random() * 6) + 1;
+                diceEl.src = `dice-${finalDice}.png`;
+
+                if (finalDice !== 1) {
+                    currentScore += finalDice;
+                    document.getElementById(`current--${activePlayer}`).textContent = currentScore;
+                } else {
+                    switchPlayer();
+                }
+            }
+        }, 50); // Speed of animation
     }
 });
+
 
 //player selects button hold
 btnHold.addEventListener('click', function () {
@@ -107,13 +139,11 @@ btnHold.addEventListener('click', function () {
             document.querySelector(`.player--${activePlayer}`).classList.add('player--winner');
             playing = false;
             diceEl.classList.remove('hidden');
+            btnRoll.disabled = true;
+            btnHold.disabled = true;
 
             // 🎉 Show win overlay message
-            const winOverlay = document.getElementById('winOverlay');
-            const winMessage = document.getElementById('winMessage');
-            winMessage.textContent = `🎉 Player ${activePlayer + 1} Wins! 🎉`;
-            winMessage.classList.remove('hidden');
-            winOverlay.style.display = 'flex';
+            showWinOverlay();
         }
         else {
             // Move to next player
@@ -123,6 +153,7 @@ btnHold.addEventListener('click', function () {
     }
 })
 
-btnNew.addEventListener('click', showWinningScorePrompt);
 document.getElementById('btnWinNewGame').addEventListener('click', showWinningScorePrompt);
+
+
 
