@@ -210,20 +210,27 @@ main {
 
 /* Mobile Responsiveness */
 @media (max-width: 600px) {
-  .name {
-    font-size: 1.2rem;
+  .player {
+    width: 95%;
+    padding: 0.2rem 0.4rem !important;
+    /* very tight vertical and horizontal padding */
+    margin: 0.2rem 0 !important;
+    /* tight margin */
+    flex: none !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    box-shadow: none;
+    /* optional: remove shadow to look flatter */
+    border-radius: 4px;
+    /* optional: reduce roundness */
   }
 
   .players {
-    flex-direction: column;
-    align-items: center;
-    top-margin: 1rem;
+    gap: 0.3rem;
   }
 
-  .player {
-    width: 85%;
-    padding: 0.2rem 0.4rem;
-    margin: 0rem;
+  .name {
+    font-size: 1.5rem;
   }
 
   .score,
@@ -232,11 +239,12 @@ main {
   }
 
   .current-label {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
 
   .dice {
     width: 60px;
+    margin: 10px 0;
   }
 
   .btn {
@@ -248,7 +256,7 @@ main {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    gap: .5rem;
+    gap: 0.5rem;
   }
 
   .btn {
