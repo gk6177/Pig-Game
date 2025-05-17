@@ -131,7 +131,7 @@ main {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: 3rem;
 }
 
 .btn-ok,
@@ -199,6 +199,12 @@ main {
   transition: all 0.3s ease;
 }
 
+.player--error {
+  background-color: #ff4d4d !important;
+  transition: background-color 0.3s ease;
+}
+
+
 .player--winner {
   background-color: #099d2c;
   border: 2px solid green;
@@ -206,6 +212,10 @@ main {
 
 .player--winner .name {
   color: darkgreen;
+}
+
+.win-message {
+  margin-bottom: 4rem;
 }
 
 /* Mobile Responsiveness */

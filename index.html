@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <!-- Game Board Overlay -->
+    <!-- Player 1 Overlay -->
     <div class="players">
       <section class="player player--0 player--active">
         <h2 class="name" id="name--0">Player 1</h2>
@@ -42,9 +42,12 @@
           </div>
         </div>
       </section>
-    </div> <!-- Dice and Button Overlay -->
     </div>
+
+    <!-- Dice Overlay -->
     <img src="dice-5.png" alt="Playing dice" class="dice" />
+
+    <!-- Player 1 Overlay -->
     <div class="players">
       <section class="player player--1">
         <h2 class="name" id="name--1">Player 2</h2>
@@ -56,6 +59,8 @@
         </div>
       </section>
     </div>
+
+    <!-- Dice Controls (buttons) Overlay -->
     <div class="dice-controls">
       <button class="btn btn--roll">🎲 Roll dice</button>
       <button class="btn btn--hold">📥 Hold</button>
@@ -63,8 +68,10 @@
 
 
   </main>
+
   <script src="script.js"></script>
   <audio id="dice-sound" src="sounds/dice-142528.mp3" preload="auto"></audio>
+  <audio id="roll1-sound" src="sounds/error-call-to-attention-129258.mp3" preload="auto"></audio>
 </body>
 
 </html>

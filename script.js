@@ -12,9 +12,7 @@ const diceEl = document.querySelector('.dice');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
 
-
 // Starting Conditions
-
 let scores, currentScore, activePlayer, playing, winningScore;
 
 function showWinningScorePrompt() {
@@ -24,7 +22,6 @@ function showWinningScorePrompt() {
     document.getElementById('scorePromptOverlay').classList.add('active');
     input.focus();
 }
-
 
 function submitWinningScore() {
     const input = document.getElementById('scoreInput').value;
@@ -39,7 +36,6 @@ function cancelWinningScore() {
     document.getElementById('scorePromptOverlay').classList.remove('active');
     startGame();
 }
-
 
 function startGame() {
     document.getElementById('winOverlay').classList.remove('active');
@@ -89,7 +85,7 @@ const switchPlayer = function () {
 btnRoll.addEventListener('click', function () {
     if (playing) {
         const diceSound = document.getElementById('dice-sound');
-
+        const roll1Sound = document.getElementById('roll1-sound');
         // Play dice sound
         diceSound.currentTime = 0;
         diceSound.play();
@@ -118,7 +114,17 @@ btnRoll.addEventListener('click', function () {
                     currentScore += finalDice;
                     document.getElementById(`current--${activePlayer}`).textContent = currentScore;
                 } else {
-                    switchPlayer();
+                    // Play dice sound
+                    roll1Sound.currentTime = 0;
+                    roll1Sound.play();
+
+                    // ❗ Flash red on 1
+                    const playerEl = document.querySelector(`.player--${activePlayer}`);
+                    playerEl.classList.add('player--error');
+                    setTimeout(() => {
+                        playerEl.classList.remove('player--error');
+                        switchPlayer();
+                    }, 500);
                 }
             }
         }, 50); // Speed of animation
