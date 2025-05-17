@@ -226,20 +226,20 @@ main {
   }
 
   .players {
-    gap: 0.3rem;
+    gap: 0.2rem;
   }
 
   .name {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .score,
   .current-score {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .current-label {
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
 
   .dice {
