@@ -65,6 +65,26 @@ function showWinOverlay() {
     winMessage.textContent = `🎉 Player ${activePlayer + 1} Wins! 🎉`;
     winMessage.classList.remove('hidden');
     winOverlay.classList.add('active');
+
+    vibrate([200, 100, 200]);
+
+    // Play triumph sound
+    const yeoahSound = document.getElementById('triumph-sound');
+    yeoahSound.currentTime = 0;
+    yeoahSound.play();
+
+    // 🎉 Trigger confetti
+    confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+    });
+}
+
+function vibrate(pattern) {
+    if (navigator.vibrate) {
+        navigator.vibrate(pattern);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -118,6 +138,8 @@ btnRoll.addEventListener('click', function () {
                     roll1Sound.currentTime = 0;
                     roll1Sound.play();
 
+                    vibrate(100);
+
                     // ❗ Flash red on 1
                     const playerEl = document.querySelector(`.player--${activePlayer}`);
                     playerEl.classList.add('player--error');
@@ -135,6 +157,10 @@ btnRoll.addEventListener('click', function () {
 //player selects button hold
 btnHold.addEventListener('click', function () {
     if (playing) {
+        const lockSound = document.getElementById('lock-sound');
+        // Play lock sound
+        lockSound.currentTime = 0;
+        lockSound.play();
         // Add active player currentscore to active player score total
         scores[activePlayer] += currentScore;
         document.getElementById(`score--${activePlayer}`).textContent = scores[activePlayer];
